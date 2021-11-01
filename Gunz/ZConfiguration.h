@@ -188,6 +188,15 @@ public:
 	ZConfiguration();
 	virtual ~ZConfiguration();
 
+	//---------------------------------------------------------------------------
+	int GetLogicalFpsLimit() const {
+		return m_Etc.nFrameLimit_perSecond;
+	}
+	int GetVisualFpsLimit() const {
+		return m_Etc.nFrameLimit_perSecond;	// Yes, this is intentional. 
+	}
+	//---------------------------------------------------------------------------
+
 	void Init();
 	void Destroy();
 	void LoadDefaultKeySetting();

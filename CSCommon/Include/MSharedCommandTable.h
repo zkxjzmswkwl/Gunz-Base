@@ -596,4 +596,6 @@ void MAddSharedCommandTable(MCommandManager* pCommandManager, int nSharedType);
 #define MC_MATCH_PLAYERWARS_RANDOM_MAPS			50044
 #define MC_MATCH_PLAYERWARS_VOTE				50045
 #define MC_MATCH_PLAYERWARS_VOTE_UPDATE			50046
+
+
 #endif

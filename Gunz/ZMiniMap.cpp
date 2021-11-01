@@ -104,10 +104,10 @@ bool ZMiniMap::Create(const char *szName)
 	m_pBaseTexture = RCreateBaseTexture(szTextureName);
 	if(!m_pBaseTexture) return false;
 
-	m_pTeamColorTexture = RCreateBaseTexture("Interface/Combat/minimap_teamcolor.png");
+	m_pTeamColorTexture = RCreateBaseTexture("Interface/default/combat/minimap_teamcolor.png");
 	if(!m_pTeamColorTexture) return false;
 
-	m_pPlayerTexture = RCreateBaseTexture("Interface/Combat/minimap_player.png");
+	m_pPlayerTexture = RCreateBaseTexture("Interface/default/combat/minimap_player.png");
 	if(!m_pPlayerTexture) return false;
 
 	return true;

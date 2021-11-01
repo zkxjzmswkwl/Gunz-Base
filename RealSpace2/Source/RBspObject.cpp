@@ -758,7 +758,7 @@ bool RBspObject::Draw()
 */
 	pd3dDevice->SetTexture(0,NULL);
 	pd3dDevice->SetTexture(1,NULL);
-    RGetDevice()->SetRenderState( D3DRS_LIGHTING, FALSE );
+	RGetDevice()->SetRenderState( D3DRS_LIGHTING, FALSE );
 
 
 	// world matrix 가 identity 가 아닌경우가 있으므로 camera 및 viewfrustum 을 옮겨야한다
@@ -915,7 +915,7 @@ bool RBspObject::Draw()
 	pd3dDevice->SetTextureStageState( 0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE );
 	pd3dDevice->SetTextureStageState( 1, D3DTSS_COLOROP,   D3DTOP_DISABLE );
 	pd3dDevice->SetTextureStageState( 1, D3DTSS_ALPHAOP,   D3DTOP_DISABLE );
- 	pd3dDevice->SetFVF(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1 );
+	pd3dDevice->SetFVF(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1 );
 /*
 	DrawObjects();
 //	_RPT2(_CRT_WARN,"%d polygon , %d call \n",g_nPoly,g_nCall);
@@ -1713,7 +1713,7 @@ bool RBspObject::Open_ObjectList(MXmlElement *pElement)
 			pInfo->name=szContents;
 
 			char fname[_MAX_PATH];
-            GetPurePath(fname,m_descfilename.c_str());
+			GetPurePath(fname,m_descfilename.c_str());
 			strcat(fname,szContents);
 
 			m_MeshList.SetMtrlAutoLoad(true);
@@ -2284,7 +2284,7 @@ bool RBspObject::OpenLightmap()
 			D3DX_FILTER_TRIANGLE|D3DX_FILTER_MIRROR, 
 			0, NULL, NULL, &m_ppLightmapTextures[i]);
 		
-		if(hr!=D3D_OK) mlog("lightmap texture 생성 실패 %s \n", DXGetErrorString(hr));
+		//if(hr!=D3D_OK) mlog("lightmap texture 생성 실패 %s \n", DXGetErrorString(hr));
 		delete bmpmemory;
 //		delete memory;
 	}
@@ -2667,7 +2667,7 @@ bool RBspObject::UpdateVertexBuffer()
 /*
 void RBspObject::DrawPathNode()
 {
-    RGetDevice()->SetRenderState( D3DRS_LIGHTING, FALSE );
+	RGetDevice()->SetRenderState( D3DRS_LIGHTING, FALSE );
 	RPathList::iterator i=m_PathNodes.begin();
 	while(i!=m_PathNodes.end()){
 		RPathNode* pNode=*i;

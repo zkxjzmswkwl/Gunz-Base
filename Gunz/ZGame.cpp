@@ -9,8 +9,6 @@
 #include "MBlobArray.h"
 #include "MObject.h"
 #include "ZConsole.h"
-#include "MCommandLogFrame.h"
-#include "ZInterface.h"
 #include "ZGameInterface.h"
 #include "ZApplication.h"
 #include "ZCommandTable.h"
@@ -22,13 +20,10 @@
 #include "ZEffectBillboard.h"
 #include "Config.h"
 #include "MProfiler.h"
-#include "MMatchItem.h"
 #include "ZScreenEffectManager.h"
 #include "RParticleSystem.h"
 #include "RDynamicLight.h"
 #include "ZConfiguration.h"
-#include "ZLoading.h"
-#include "Physics.h"
 #include "zeffectflashbang.h"
 #include "ZInitialLoading.h"
 #include "RealSoundEffect.h"
@@ -37,17 +32,13 @@
 #include "ZMyInfo.h"
 #include "ZNetCharacter.h"
 #include "ZStencilLight.h"
-#include "ZMap.h"
-#include "ZEffectStaticMesh.h"
 #include "ZEffectAniMesh.h"
 #include "ZGameAction.h"
-#include "ZSkyBox.h"
 #include "ZFile.h"
 #include "ZObject.h"
 #include "ZCharacter.h"
 #include "ZMapDesc.h"
 
-#include "MXml.h"
 #include "ZGameClient.h"
 #include "MUtil.h"
 #include "RMeshMgr.h"
@@ -56,15 +47,12 @@
 #include "RAnimationMgr.h"
 #include "ZCamera.h"
 #include "Mint4R2.h"
-#include "ZItemDesc.h"
 
 #include "MMath.h"
-#include "ZQuest.h"
 #include "MMatchUtil.h"
 #include "ZReplay.h"
 #include "ZRuleBerserker.h"
 #include "ZRuleDuelTournament.h"
-#include "ZApplication.h"
 #include "ZGameConst.h"
 
 #include "ZRuleDuel.h"
@@ -74,10 +62,6 @@
 #include "MMatchObjCache.h"
 
 #include "ZModule_HealOverTime.h"
-
-#ifdef LOCALE_NHNUSAA
-#include "ZNHN_USA_Report.h"
-#endif
 
 _USING_NAMESPACE_REALSPACE2
 

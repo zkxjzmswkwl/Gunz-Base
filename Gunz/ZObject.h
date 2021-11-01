@@ -83,6 +83,7 @@ class ZObject : public ZModuleContainer
 	MDeclareRTTI;
 
 public:
+	int		m_nDamageDone = 0;
 	ZModule_Movable* m_pModule_Movable;
 
 	bool					m_bRendered;

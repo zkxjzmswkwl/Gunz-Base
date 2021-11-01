@@ -235,7 +235,7 @@ namespace RealSpace2
 	extern bool DynamicResourceLoading;
 }
 
-#define STARTUP_CACHE_FILES
+//#define STARTUP_CACHE_FILES
 
 #ifdef TIMESCALE
 unsigned long long GetGlobalTimeMSOverride()
@@ -270,7 +270,7 @@ bool ZApplication::OnCreate(ZLoadingProgress* pLoadingProgress)
 #ifdef STARTUP_CACHE_FILES
 	auto CacheArchives = MBeginProfile("Cache archives");
 	const char* CachedFileNames[] = { "system", "model/woman", "model/man", "model/weapon", "model/NPC", "sfx",
-		"interface/default", "interface/iconos","interface/iconos", "interface/login","interface/loading",
+		"interface/default", "interface/login","interface/loading",
 		"sound/bgm", "sound/effect", };
 	for (auto&& File : CachedFileNames)
 		m_FileSystem.CacheArchive(File);
@@ -367,7 +367,8 @@ bool ZApplication::OnCreate(ZLoadingProgress* pLoadingProgress)
 
 	ZLoadingProgress meshLoading("Mesh", pLoadingProgress, .41f);
 	BEGIN_;
-	if (m_MeshMgr.LoadXmlList("system/model_character.xml", ZProgressCallBack, &meshLoading) == -1)
+	//if (m_MeshMgr.LoadXmlList("system/model_character.xml", ZProgressCallBack, &meshLoading) == -1)
+	if (m_MeshMgr.LoadXmlList("model/character.xml", ZProgressCallBack, &meshLoading) == -1)
 		return false;
 
 	mlog("Load character.xml success,\n");
@@ -376,7 +377,7 @@ bool ZApplication::OnCreate(ZLoadingProgress* pLoadingProgress)
 	meshLoading.UpdateAndDraw(1.f);
 
 #ifdef _QUEST
-	if (m_NPCMeshMgr.LoadXmlList("system/model_npc.xml") == -1)
+	if (m_NPCMeshMgr.LoadXmlList("model/npc.xml") == -1)
 		return false;
 #endif
 
@@ -386,7 +387,7 @@ bool ZApplication::OnCreate(ZLoadingProgress* pLoadingProgress)
 
 	BEGIN_;
 
-	string strFileNameWeapon("system/model_weapon.xml");
+	string strFileNameWeapon("model/weapon.xml");
 #ifndef _DEBUG
 	strFileNameWeapon += "";
 #endif

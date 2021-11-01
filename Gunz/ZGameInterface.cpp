@@ -897,36 +897,36 @@ bool ZGameInterface::OnGameCreate(void)
 	switch (nBitmap)
 	{
 	case (0):
-		strcpy(szFileName, "interface/Loading/loading_1.jpg");
+		strcpy(szFileName, "interface/default/Loading/loading_1.jpg");
 		break;
 	case (1):
-		strcpy(szFileName, "interface/Loading/loading_2.jpg");
+		strcpy(szFileName, "interface/default/Loading/loading_2.jpg");
 		break;
 	case (2):
-		strcpy(szFileName, "interface/Loading/loading_3.jpg");
+		strcpy(szFileName, "interface/default/Loading/loading_3.jpg");
 		break;
 	case (3):
-		strcpy(szFileName, "interface/Loading/loading_4.jpg");
+		strcpy(szFileName, "interface/default/Loading/loading_4.jpg");
 		break;
 	case (4):
-		strcpy(szFileName, "interface/Loading/loading_5.jpg");
+		strcpy(szFileName, "interface/default/Loading/loading_5.jpg");
 		break;
 	case (5):
-		strcpy(szFileName, "interface/Loading/loading_6.jpg");
+		strcpy(szFileName, "interface/default/Loading/loading_6.jpg");
 		break;
 	case (6):
-		strcpy(szFileName, "interface/Loading/loading_7.jpg");
+		strcpy(szFileName, "interface/default/Loading/loading_7.jpg");
 		break;
 	case (7):
-		strcpy(szFileName, "interface/Loading/loading_8.jpg");
+		strcpy(szFileName, "interface/default/Loading/loading_8.jpg");
 		break;
 	case (8):
-		strcpy(szFileName, "interface/Loading/loading_9.jpg");
+		strcpy(szFileName, "interface/default/Loading/loading_9.jpg");
 		break;
 	}
 
 	ZGetInitialLoading()->AddBitmap(0, szFileName);
-	ZGetInitialLoading()->AddBitmapBar("interface/Loading/loading.bmp");
+	ZGetInitialLoading()->AddBitmapBar("interface/default/Loading/loading.bmp");
 	ZGetInitialLoading()->SetPercentage(0.0f);
 	ZGetInitialLoading()->Draw(MODE_FADEIN, 0, true);
 

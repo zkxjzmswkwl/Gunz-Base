@@ -173,14 +173,56 @@ void ZOptionInterface::InitInterfaceOption(void)
 		}
 
 		pWidget = (MComboBox*)pResource->FindWidget("CharTexLevel");
+
+		int TexLevel = 0;
+		u32 flag = 0;
+		int EffectLevel = 0;
+		int nTextureFormat = 0;
+
 		if (pWidget) {
-			pWidget->SetSelIndex(ZGetConfiguration()->GetVideo()->nCharTexLevel);
+
+			TexLevel = pWidget->GetSelIndex();
+			if (!strcmp(pWidget->GetSelItemString(), "Archetype's"))
+				TexLevel = 8;
+
+			if (ZGetConfiguration()->GetVideo()->bTerrible) {
+				ZGetConfiguration()->GetVideo()->nCharTexLevel = TexLevel;
+				if (TexLevel == 2)
+					SetObjectTextureLevel(TexLevel + 2);
+				else
+					SetObjectTextureLevel(TexLevel);
+
+				flag |= static_cast<u32>(RTextureType::Object);
+			}
+			else if (ZGetConfiguration()->GetVideo()->nCharTexLevel != TexLevel) {
+				ZGetConfiguration()->GetVideo()->nCharTexLevel = TexLevel;
+				SetObjectTextureLevel(TexLevel);
+				flag |= static_cast<u32>(RTextureType::Object);
+			}
 		}
 
-		pWidget = (MComboBox*)pResource->FindWidget("MapTexLevel");
 		if (pWidget) {
-			pWidget->SetSelIndex(ZGetConfiguration()->GetVideo()->nMapTexLevel);
+
+			TexLevel = pWidget->GetSelIndex();
+			if (!strcmp(pWidget->GetSelItemString(), "Archetype's"))
+				TexLevel = 8;
+
+			if (ZGetConfiguration()->GetVideo()->bTerrible) {
+				ZGetConfiguration()->GetVideo()->nCharTexLevel = TexLevel;
+				if (TexLevel == 2)
+					SetObjectTextureLevel(TexLevel + 2);
+				else
+					SetObjectTextureLevel(TexLevel);
+
+				flag |= static_cast<u32>(RTextureType::Object);
+			}
+			if (ZGetConfiguration()->GetVideo()->nMapTexLevel != TexLevel) {
+				ZGetConfiguration()->GetVideo()->nMapTexLevel = TexLevel;
+				SetMapTextureLevel(TexLevel);
+				flag |= static_cast<u32>(RTextureType::Map);
+			}
 		}
+
 
 		pWidget = (MComboBox*)pResource->FindWidget("EffectLevel");
 		if (pWidget) {
@@ -414,15 +456,21 @@ void ZOptionInterface::InitInterfaceOption(void)
 			pCrossHairPreview->SetOnDrawCallback(ZCrossHair::OnDrawOptionCrossHairPreview);
 		}
 
-		pComboBox = (MComboBox*)pResource->FindWidget("FrameLimit_PerSecond");
-		if (pComboBox) {
-			if (Z_ETC_FRAMELIMIT_PERSECOND >= pComboBox->GetCount())
-			{
-				Z_ETC_FRAMELIMIT_PERSECOND = 0;
-			}
-			pComboBox->SetSelIndex(Z_ETC_FRAMELIMIT_PERSECOND);
-			RSetFrameLimitPerSeceond(Z_ETC_FRAMELIMIT_PERSECOND);
+		pEdit = (MEdit*)pResource->FindWidget("FrameLimit_PerSecond");
+		if (pEdit) {
+			pEdit->SetText(std::to_string(ZGetConfiguration()->GetEtc()->nFrameLimit_perSecond).c_str());
+			RSetFrameLimitPerSeceond(ZGetConfiguration()->GetEtc()->nFrameLimit_perSecond);
 		}
+
+		//pComboBox = (MComboBox*)pResource->FindWidget("FrameLimit_PerSecond");
+		//if (pComboBox) {
+		//	if (Z_ETC_FRAMELIMIT_PERSECOND >= pComboBox->GetCount())
+		//	{
+		//		Z_ETC_FRAMELIMIT_PERSECOND = 0;
+		//	}
+		//	pComboBox->SetSelIndex(Z_ETC_FRAMELIMIT_PERSECOND);
+		//	RSetFrameLimitPerSeceond(Z_ETC_FRAMELIMIT_PERSECOND);
+		//}
 	}
 
 	{
@@ -822,11 +870,11 @@ bool ZOptionInterface::SaveInterfaceOption(void)
 			Z_ETC_CROSSHAIR = pComboBox->GetSelIndex();
 		}
 
-		pComboBox = (MComboBox*)pResource->FindWidget("FrameLimit_PerSecond");
-		if (pComboBox)
+		pEdit = (MEdit*)pResource->FindWidget("FrameLimit_PerSecond");
+		if (pEdit)
 		{
-			Z_ETC_FRAMELIMIT_PERSECOND = pComboBox->GetSelIndex();
-			RSetFrameLimitPerSeceond(Z_ETC_FRAMELIMIT_PERSECOND);
+			ZGetConfiguration()->GetEtc()->nFrameLimit_perSecond = atoi(pEdit->GetText());
+			RSetFrameLimitPerSeceond(atoi(pEdit->GetText()));
 		}
 	}
 
@@ -1021,9 +1069,15 @@ void ZOptionInterface::OptimizationVideoOption()
 	if (nVMem < 32)
 	{
 		pCombo = (MComboBox*)pResource->FindWidget("CharTexLevel");
-		if (pCombo != 0) pCombo->SetSelIndex(2);
+		if (pCombo) {
+			pCombo->SetSelIndex(ZGetConfiguration()->GetVideo()->nCharTexLevel == 8 ? 3 : ZGetConfiguration()->GetVideo()->nCharTexLevel);
+		}
+
 		pCombo = (MComboBox*)pResource->FindWidget("MapTexLevel");
-		if (pCombo != 0) pCombo->SetSelIndex(2);
+		if (pCombo) {
+			pCombo->SetSelIndex(ZGetConfiguration()->GetVideo()->nMapTexLevel == 8 ? 3 : ZGetConfiguration()->GetVideo()->nMapTexLevel);
+		}
+
 		pCombo = (MComboBox*)pResource->FindWidget("EffectLevel");
 		if (pCombo != 0) pCombo->SetSelIndex(2);
 		pCombo = (MComboBox*)pResource->FindWidget("TextureFormat");
@@ -1037,9 +1091,15 @@ void ZOptionInterface::OptimizationVideoOption()
 	else if (nVMem < 64)
 	{
 		pCombo = (MComboBox*)pResource->FindWidget("CharTexLevel");
-		if (pCombo != 0) pCombo->SetSelIndex(1);
+		if (pCombo) {
+			pCombo->SetSelIndex(ZGetConfiguration()->GetVideo()->nCharTexLevel == 8 ? 3 : ZGetConfiguration()->GetVideo()->nCharTexLevel);
+		}
+
 		pCombo = (MComboBox*)pResource->FindWidget("MapTexLevel");
-		if (pCombo != 0) pCombo->SetSelIndex(2);
+		if (pCombo) {
+			pCombo->SetSelIndex(ZGetConfiguration()->GetVideo()->nMapTexLevel == 8 ? 3 : ZGetConfiguration()->GetVideo()->nMapTexLevel);
+		}
+
 		pCombo = (MComboBox*)pResource->FindWidget("EffectLevel");
 		if (pCombo != 0) pCombo->SetSelIndex(1);
 		pCombo = (MComboBox*)pResource->FindWidget("TextureFormat");
@@ -1053,9 +1113,14 @@ void ZOptionInterface::OptimizationVideoOption()
 	else
 	{
 		pCombo = (MComboBox*)pResource->FindWidget("CharTexLevel");
-		if (pCombo != 0) pCombo->SetSelIndex(1);
+		if (pCombo) {
+			pCombo->SetSelIndex(ZGetConfiguration()->GetVideo()->nCharTexLevel == 8 ? 3 : ZGetConfiguration()->GetVideo()->nCharTexLevel);
+		}
+
 		pCombo = (MComboBox*)pResource->FindWidget("MapTexLevel");
-		if (pCombo != 0) pCombo->SetSelIndex(1);
+		if (pCombo) {
+			pCombo->SetSelIndex(ZGetConfiguration()->GetVideo()->nMapTexLevel == 8 ? 3 : ZGetConfiguration()->GetVideo()->nMapTexLevel);
+		}
 		pCombo = (MComboBox*)pResource->FindWidget("EffectLevel");
 		if (pCombo != 0) pCombo->SetSelIndex(0);
 		pCombo = (MComboBox*)pResource->FindWidget("TextureFormat");

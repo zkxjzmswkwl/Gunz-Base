@@ -2,11 +2,11 @@
 
 #include <stdio.h>
 #include <string>
-#include "rapidxml.hpp"
 #include "MUtil.h"
 #include "SafeString.h"
 #include "StringView.h"
 #include "optional.h"
+#include "rapidxml.hpp"	// Literally how do you rip Jeff's rapid xml then forget to **fucking include it**?
 
 using MXmlDomDoc = rapidxml::xml_document<>;
 using MXmlDomDocPtr = MXmlDomDoc*;

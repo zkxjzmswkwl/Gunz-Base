@@ -1008,11 +1008,11 @@ void ZConfiguration::Init()
 	m_MovingPicture.iFileSize = 0;
 
 	m_Audio.bBGMEnabled = true;
-	m_Audio.fBGMVolume = 0.3f;
+	m_Audio.fBGMVolume = 0.2f;
 	m_Audio.bBGMMute = false;
 	m_Audio.bEffectMute = false;
-	m_Audio.fEffectVolume = 0.3f; //CUSTOM: FIX
-	m_Audio.b3DSound = true;
+	m_Audio.fEffectVolume = 0.3f; 
+	m_Audio.b3DSound = false;
 	m_Audio.b8BitSound = false;
 	m_Audio.bInverse = false;
 	m_Audio.bHWMixing = false;
@@ -1038,7 +1038,7 @@ void ZConfiguration::Init()
 	m_Etc.nNetworkPort1 = 7700;
 	m_Etc.nNetworkPort2 = 7800;
 	m_Etc.nCrossHair = 0;
-	m_Etc.nFrameLimit_perSecond = 0;
+	m_Etc.nFrameLimit_perSecond = 250;
 	m_Etc.bInGameNoChat = false;
 
 	m_bOptimization = false;

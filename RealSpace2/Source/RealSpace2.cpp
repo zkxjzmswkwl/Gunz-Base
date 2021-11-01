@@ -11,7 +11,7 @@
 int nSettingAA = 2;
 _NAMESPACE_REALSPACE2_BEGIN
 
-#pragma comment ( lib, "d3d9.lib" )
+#pragma comment ( lib, "d3dx9.lib" )
 
 bool DynamicResourceLoading = true;
 
@@ -511,7 +511,9 @@ void RResetDevice(const RMODEPARAMS* params)
 
 	_ASSERT(hr == D3D_OK);
 	if (hr != D3D_OK) {
-		mlog("device reset failed : %s\n", DXGetErrorString(hr));
+		// You cannot link any random dxerr header and be done with it.
+		// Do you idiots even compile before you push...?
+		//mlog("device reset failed : %s\n", DXGetErrorString(hr));
 		int* a = 0;
 		*a = 1;
 	}
@@ -569,6 +571,7 @@ bool RBeginScene()
 	return true;
 }
 
+
 void RFlip()
 {
 	REndScene();
@@ -586,29 +589,29 @@ void RFlip()
 
 	RBeginScene();
 
-	{
-		g_nFrameCount++;
-		DWORD currentTime = timeGetTime();
+	//{
+	//	g_nFrameCount++;
+	//	DWORD currentTime = timeGetTime();
 
-		{
-			float fFrameLimit = 0;
-			if (g_nFrameLimitValue > 0)
-				fFrameLimit = 1000 / g_nFrameLimitValue;
-			if ((currentTime - g_dwLastTime) < fFrameLimit)
-			{
-				Sleep((int)fFrameLimit - (currentTime - g_dwLastTime));
-				currentTime = timeGetTime();
-			}
-			g_dwLastTime = currentTime;
-		}
+	//	{
+	//		float fFrameLimit = 0;
+	//		if (g_nFrameLimitValue > 0)
+	//			fFrameLimit = 1000 / g_nFrameLimitValue;
+	//		if ((currentTime - g_dwLastTime) < fFrameLimit)
+	//		{
+	//			Sleep((int)fFrameLimit - (currentTime - g_dwLastTime));
+	//			currentTime = timeGetTime();
+	//		}
+	//		g_dwLastTime = currentTime;
+	//	}
 
-		if (g_dwLastFPSTime + FPS_INTERVAL < currentTime)
-		{
-			g_fFPS = (g_nFrameCount - g_nLastFrameCount) * FPS_INTERVAL / ((float)(currentTime - g_dwLastFPSTime) * (FPS_INTERVAL / 1000));
-			g_dwLastFPSTime = currentTime;
-			g_nLastFrameCount = g_nFrameCount;
-		}
-	}
+	//	if (g_dwLastFPSTime + FPS_INTERVAL < currentTime)
+	//	{
+	//		g_fFPS = (g_nFrameCount - g_nLastFrameCount) * FPS_INTERVAL / ((float)(currentTime - g_dwLastFPSTime) * (FPS_INTERVAL / 1000));
+	//		g_dwLastFPSTime = currentTime;
+	//		g_nLastFrameCount = g_nFrameCount;
+	//	}
+	//}
 }
 
 void RDrawLine(rvector& v1, rvector& v2, DWORD dwColor)

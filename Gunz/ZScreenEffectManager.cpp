@@ -63,7 +63,8 @@ bool ZScreenEffect::DrawCustom(unsigned long int nTime, rvector& vOffset, float 
 		const rvector eye(0, 0, -780), at(0, 0, 0), up(0, 1, 0);
 		D3DXMatrixLookAtLH(&View, &eye, &at, &up);
 	}
-	else if (RGetWidthScreen() != 0.75f)  // Custom: Fix Screen resize
+	// Screen resize adjustment.
+	else if (RGetWidthScreen() != 0.75f) 
 	{
 		const rvector eye(0, 0, -(975.0f / RGetWidthScreen() / 2)), at(0, 0, 0), up(0, 1, 0);
 		D3DXMatrixLookAtLH(&View, &eye, &at, &up);
@@ -422,15 +423,16 @@ bool ZScreenEffectManager::Create()
 
 	BEGIN_;
 
+	// Stop fucking with paths asshole
 	m_pQuestEffectMeshMgr = new RMeshMgr();
-	if (m_pQuestEffectMeshMgr->LoadXmlList("interface/combat/screeneffects_quest.xml") == -1) {
+	if (m_pQuestEffectMeshMgr->LoadXmlList("interface/default/combat/screeneffects_quest.xml") == -1) {
 		mlog("quest combat list loding error\n");
 		SAFE_DELETE(m_pQuestEffectMeshMgr);
 		return false;
 	}
 
 	m_pEffectMeshMgr = new RMeshMgr;
-	if (m_pEffectMeshMgr->LoadXmlList("interface/combat/screeneffects.xml") == -1) {
+	if (m_pEffectMeshMgr->LoadXmlList("interface/default/combat/screeneffects.xml") == -1) {
 		mlog("combat list loding error\n");
 		SAFE_DELETE(m_pEffectMeshMgr);
 		return false;
@@ -527,7 +529,7 @@ bool ZScreenEffectManager::Create()
 
 	m_CurrentComboLevel = ZCL_NONE;
 
-	m_pGaugeTexture = RCreateBaseTexture("Interface/COMBAT/gauge.bmp");
+	m_pGaugeTexture = RCreateBaseTexture("Interface/default/combat/gauge.bmp");
 
 	m_fGaugeHP = m_fGaugeAP = m_fGaugeEXP = 0.f;
 	m_fCurGaugeHP = m_fCurGaugeAP = -1.f;

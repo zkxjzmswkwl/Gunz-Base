@@ -44,18 +44,12 @@
 #endif
 
 #include "RLenzFlare.h"
-#include "ZLocale.h"
 #include "MSysInfo.h"
 
-#include "MTraceMemory.h"
 #include "ZInput.h"
 #include "Mint4Gunz.h"
-#include "SecurityTest.h"
-#include "CheckReturnCallStack.h"
 
-#include "MFile.h"
 #include "RGMain.h"
-#include "RGGlobal.h"
 
 RMODEPARAMS	g_ModeParams = { 800,600,true,D3DFMT_R5G6B5 };
 
@@ -164,22 +158,22 @@ RRESULT OnCreate(void* pParam)
 		switch (nBitmap)
 		{
 		case (0):
-			strcpy_safe(szFileName, "interface/Loading/loading_1.jpg");
+			strcpy_safe(szFileName, "interface/default/Loading/loading_1.jpg");
 			break;
 		case (1):
-			strcpy_safe(szFileName, "interface/Loading/loading_2.jpg");
+			strcpy_safe(szFileName, "interface/default/Loading/loading_2.jpg");
 			break;
 		case (2):
-			strcpy_safe(szFileName, "interface/Loading/loading_3.jpg");
+			strcpy_safe(szFileName, "interface/default/Loading/loading_3.jpg");
 			break;
 		case (3):
-			strcpy_safe(szFileName, "interface/Loading/loading_4.jpg");
+			strcpy_safe(szFileName, "interface/default/Loading/loading_4.jpg");
 			break;
 		}
 
-		ZGetInitialLoading()->AddBitmapGrade("interface/Loading/loading_grade_fifteen.jpg");
+		ZGetInitialLoading()->AddBitmapGrade("interface/default/Loading/loading_grade_fifteen.jpg");
 		ZGetInitialLoading()->AddBitmap(0, szFileName);
-		ZGetInitialLoading()->AddBitmapBar("interface/Loading/loading.bmp");
+		ZGetInitialLoading()->AddBitmapBar("interface/default/Loading/loading.bmp");
 		ZGetInitialLoading()->SetText(g_pDefFont, 10, 30, cstrReleaseDate);
 		ZGetInitialLoading()->SetPercentage(0.0f);
 		ZGetInitialLoading()->Draw(MODE_FADEIN, 0, true);
@@ -322,6 +316,72 @@ RRESULT OnDestroy(void* pParam)
 	return R_OK;
 }
 
+
+//---------------------------------------------------------------------------
+template <typename T, int (ZConfiguration::* Getter)() const>
+struct FPSLimiter
+{
+	T Action;
+	int CurFPS{};
+	int LastFPS{};
+	uint64_t LastSecondTime{};
+
+	FPSLimiter(T&& Action) : Action{ std::move(Action) } {}
+
+	auto Tick()
+	{
+		auto TPS = QPF();
+		auto CurTime = QPC();
+
+		if (CurTime - LastSecondTime > TPS) {
+			LastSecondTime = QPC();
+			LastFPS = CurFPS;
+			CurFPS = 0;
+		}
+
+		auto FPSLimit = (ZGetConfiguration()->*Getter)();
+		if (FPSLimit <= 0)
+		{
+			++CurFPS;
+			return true;
+		}
+
+		double fActual = double(CurFPS) / (double(FPSLimit) - 1);
+		double fGoal = double((CurTime - LastSecondTime) % TPS) / TPS;
+		int nSleep = int((fActual - fGoal) * 1000);
+		auto ret = Action(nSleep);
+		if (ret)
+			++CurFPS;
+		return ret;
+	}
+};
+//---------------------------------------------------------------------------
+template <int (ZConfiguration::* Getter)() const, typename T>
+constexpr auto MakeFPSLimiter(T&& Action)
+{
+	return FPSLimiter<T, Getter>(std::move(Action));
+}
+//---------------------------------------------------------------------------
+auto LogicalFPSLimiter = MakeFPSLimiter<&ZConfiguration::GetLogicalFpsLimit>(
+	[&](auto nSleep) {
+		if (nSleep <= 0)
+			return true;
+
+		if (nSleep > 250)
+			MLog("Large sleep %d!\n", nSleep);
+		else
+			Sleep(nSleep);
+
+		return true;
+	});
+//---------------------------------------------------------------------------
+auto VisualFPSLimiter = MakeFPSLimiter<&ZConfiguration::GetVisualFpsLimit>(
+	[&](auto nSleep) {
+		return nSleep <= 0;
+	});
+//---------------------------------------------------------------------------
+
+
 RRESULT OnUpdate(void* pParam)
 {
 	auto prof = MBeginProfile("main::OnUpdate");
@@ -329,6 +389,8 @@ RRESULT OnUpdate(void* pParam)
 	g_pInput->Update();
 
 	g_App.OnUpdate();
+
+	LogicalFPSLimiter.Tick();
 
 	const DWORD dwCurrUpdateTime = timeGetTime();
 

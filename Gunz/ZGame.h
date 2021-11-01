@@ -42,6 +42,19 @@ class ZReplayLoader;
 
 void CheckMsgAboutChat(char* msg);
 
+struct ZAntiLeadTemporaryInfo
+{
+	unsigned long    m_nVictimLowID;
+	char            m_nPartsType;
+};
+
+
+struct ZAntiLead_UIDListNode
+{
+	unsigned long                    LowID;
+	vector<ZAntiLeadTemporaryInfo*>    Info;
+};
+
 enum ZGAME_READYSTATE {
 	ZGAME_READYSTATE_INIT,
 	ZGAME_READYSTATE_WAITSYNC,
